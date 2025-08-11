@@ -12,11 +12,10 @@ export const metadata = {
   title: "Entrar — Anka",
 }
 
-export default function Page() {
+export default function LoginPage() {
   return (
     <main className={cn("min-h-screen bg-neutral-950 text-neutral-100")}>
       <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-10 lg:grid-cols-2 lg:gap-10 lg:py-16">
-        {/* Coluna do formulário */}
         <QueryProvider>
           <section className="flex flex-col">
             <div className="mb-8 flex items-center gap-3">
@@ -42,14 +41,6 @@ export default function Page() {
               </CardHeader>
               <CardContent>
                 <LoginForm />
-                <div className="mt-4 flex items-center justify-between text-sm">
-                  <Link href="#" className="text-neutral-400 underline underline-offset-4 hover:text-neutral-200">
-                    Esqueceu a senha?
-                  </Link>
-                  <Link href="#" className="text-neutral-400 underline underline-offset-4 hover:text-neutral-200">
-                    Criar conta
-                  </Link>
-                </div>
               </CardContent>
             </Card>
 
@@ -60,7 +51,6 @@ export default function Page() {
           </section>
         </QueryProvider>
 
-        {/* Coluna de visual/preview baseada no dashboard */}
         <section className="relative hidden min-h-[520px] overflow-hidden rounded-2xl border border-neutral-800/80 bg-gradient-to-b from-neutral-900 to-neutral-950 p-6 lg:block">
           <div
             aria-hidden

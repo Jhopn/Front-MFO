@@ -1,36 +1,46 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { DefaultUser } from "next-auth";
-import { DefaultJWT } from "next-auth/jwt";
 import { jwtDecode } from "jwt-decode";
-declare module "next-auth/jwt" {
 
-  interface JWT extends DefaultJWT {
-    accessToken?: string;
-    role?: "ADMIN" | "USER";
-    exp?: number;
+interface CustomJWTPayload {
+  id: string;
+  email: string;
+  roles: string[];
+  iat: number;
+  exp: number;
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    email: string;
+    roles: string[];
+    accessToken: string;
+    exp: number;
   }
 }
 
 declare module "next-auth" {
-  interface Session extends DefaultSession {
-    accessToken?: string;
-    user: DefaultSession["user"] & {
-      role?: "ADMIN" | "USER";
-      exp?: number;
-    };
+  interface Session {
+    accessToken: string;
+    user: {
+      id: string;
+      email: string;
+      roles: string[];
+    } & DefaultSession["user"];
   }
 
-  interface User extends DefaultUser {
-    accessToken?: string;
-    role?: "ADMIN" | "USER";
-    exp?: number;
+  interface User {
+    id: string;
+    email: string;
+    roles: string[];
+    accessToken: string;
   }
 }
 
-interface BackResponse {
-  user: { user_id: string; email: string; role: "ADMIN" | "USER" };
-  access_token: string;
+interface BackendLoginResponse {
+  userId: string;
+  token: string;
 }
 
 export const handlerAuth = NextAuth({
@@ -45,26 +55,29 @@ export const handlerAuth = NextAuth({
         password: { type: "password" }
       },
       async authorize(credentials) {
+        if (!credentials) return null;
+
         try {
-          const res = await fetch('http://localhost:4000/auth/login', {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}login`, {
             method: "POST",
             body: JSON.stringify(credentials),
             headers: { "Content-Type": "application/json" },
           });
 
-          const json: BackResponse = await res.json();
+          if (!res.ok) {
+            return null;
+          }
 
-          if (!res.ok) return null;
-
-          const { exp } = jwtDecode<{ exp: number }>(json.access_token);
+          const json: BackendLoginResponse = await res.json();
+          const decodedToken = jwtDecode<CustomJWTPayload>(json.token);
 
           return {
-            id: json.user.user_id,
-            email: json.user.email,
-            accessToken: json.access_token,
-            role: json.user.role,
-            exp,
+            id: decodedToken.id,
+            email: decodedToken.email,
+            roles: decodedToken.roles,
+            accessToken: json.token,
           };
+
         } catch (error) {
           console.error("Authentication error:", error);
           return null;
@@ -76,18 +89,20 @@ export const handlerAuth = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.roles = user.roles;
         token.accessToken = user.accessToken;
-        token.role = user.role;      
-        token.exp = user.exp;       
       }
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
-      session.user.role   = token.role as "ADMIN" | "USER";
-      session.user.exp    = token.exp as number;
+      session.user.id = token.id;
+      session.user.email = token.email;
+      session.user.roles = token.roles;
+      session.accessToken = token.accessToken;
       return session;
     },
   },
