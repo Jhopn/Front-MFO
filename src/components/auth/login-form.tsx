@@ -37,11 +37,14 @@ export function LoginForm() {
 
   const { mutate: loginUser, isPending } = useMutation({
     mutationFn: async (data: LoginCredentials) => {
+      console.log(data)
       const res = await signIn('credentials', {
+        redirect: false,
         email: data.email,
         password: data.password,
-        redirect: false, 
       });
+
+
 
       if (!res?.ok) {
         throw new Error(res?.error || "Credenciais inválidas. Verifique seu e-mail e senha.");
