@@ -9,7 +9,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.replace("/login");
+      router.replace("/");
       return;
     }
   }, [status, session, router]);
@@ -17,8 +17,8 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-[#66A925] flex flex-col justify-center items-center gap-2">
-        <h1 className="text-4xl md:text-3xl text-white font-extrabold tracking-wide">
+      <div className="min-h-screen .dark flex flex-col justify-center items-center gap-2 bg-[#101010]">
+        <h1 className="text-4xl md:text-2xl text-blak text-center font-extrabold tracking-wide">
           Carregando...
         </h1>
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-white border-opacity-50 mb-6"></div>

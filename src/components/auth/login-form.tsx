@@ -44,8 +44,6 @@ export function LoginForm() {
         password: data.password,
       });
 
-
-
       if (!res?.ok) {
         throw new Error(res?.error || "Credenciais inválidas. Verifique seu e-mail e senha.");
       }
@@ -53,7 +51,7 @@ export function LoginForm() {
       return res;
     },
     onSuccess: () => {
-      router.push('/dashboard');
+      router.push('/client');
     },
     onError: (error: Error) => {
       setApiError(error.message);

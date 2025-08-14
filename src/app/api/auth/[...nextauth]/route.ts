@@ -59,7 +59,7 @@ export const handlerAuth = NextAuth({
         console.log(credentials)
 
         try {
-          const res = await fetch(`http://localhost:4000/login`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
             method: "POST",
             body: JSON.stringify(credentials),
             headers: { "Content-Type": "application/json" },

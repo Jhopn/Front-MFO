@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, Bitcoin, TrendingUp, Home, Building } from "lucide-react"
-import type { DashboardData } from "@/lib/api"
+import type { DashboardData } from "@/services/api"
 
 interface AssetCardsProps {
   data: DashboardData
@@ -37,7 +37,7 @@ export function AssetCards({ data }: AssetCardsProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 border-gray-800">
       {/* Financial Assets */}
       <div>
         <h3 className="mb-4 text-lg font-medium">Financeiras</h3>
@@ -68,7 +68,7 @@ export function AssetCards({ data }: AssetCardsProps) {
       </div>
 
       {/* Real Estate Assets */}
-      <div>
+      <div className="border-gray-800">
         <h3 className="mb-4 text-lg font-medium">Imobilizadas</h3>
         <div className="flex gap-4 overflow-x-auto pb-2">
           {data.realEstateAssets.map((asset) => {

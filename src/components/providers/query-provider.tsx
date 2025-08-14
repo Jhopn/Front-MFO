@@ -7,7 +7,6 @@ type Props = {
 }
 
 export function QueryProvider({ children }: Props) {
-  // Garante uma única instância
   const [client] = useState(
     () =>
       new QueryClient({
@@ -18,7 +17,6 @@ export function QueryProvider({ children }: Props) {
             refetchOnWindowFocus: false,
           },
           mutations: {
-            // Por padrão, invalidaremos no onSuccess de cada mutação específica
           },
         },
       }),

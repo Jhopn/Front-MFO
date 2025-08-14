@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import type { DashboardData } from "@/lib/api"
+import type { DashboardData } from "@/services/api"
 
 interface IndicatorsSectionProps {
   data: DashboardData
@@ -22,30 +22,28 @@ export function IndicatorsSection({ data }: IndicatorsSectionProps) {
     <div>
       <h3 className="mb-4 text-lg font-medium">Indicadores</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Retirement Indicators */}
         <Card className="bg-card/50">
           <CardContent className="p-4 space-y-3">
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-blue-500" />
-              <span className="text-sm">Aposentadoria</span>
+              <span className="text-sm text-white">Aposentadoria</span>
             </div>
             <div className="text-lg font-bold">{data.indicators.retirement.age} anos</div>
 
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-blue-500" />
-              <span className="text-sm">Renda desejada/mês</span>
+              <span className="text-sm text-white">Renda desejada/mês</span>
             </div>
             <div className="text-lg font-bold">{formatCurrency(data.indicators.desiredIncome)}</div>
 
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-blue-500" />
-              <span className="text-sm">Target rendimento</span>
+              <span className="text-sm text-white">Target rendimento</span>
             </div>
             <div className="text-lg font-bold">{data.indicators.targetYield}</div>
           </CardContent>
         </Card>
 
-        {/* PGBL */}
         <Card className="bg-card/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">PGBL</CardTitle>
@@ -56,7 +54,6 @@ export function IndicatorsSection({ data }: IndicatorsSectionProps) {
           </CardContent>
         </Card>
 
-        {/* Sports Goal */}
         <Card className="bg-card/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Meta sports</CardTitle>
@@ -84,7 +81,6 @@ export function IndicatorsSection({ data }: IndicatorsSectionProps) {
           </CardContent>
         </Card>
 
-        {/* Yield Goal */}
         <Card className="bg-card/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Meta rendimento</CardTitle>
